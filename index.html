@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học viện Hành chính & Quản trị công - Cổng Trắc Nghiệm Trực Tuyến</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        napa: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            600: '#1e40af',
+                            800: '#1e3a8a', // NAPA Navy Primary
+                            900: '#0f172a',
+                            accent: '#d97706', // Gold/Amber accent
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .academic-border {
+            border-top: 4px solid #1e3a8a;
+        }
+    </style>
+</head>
+<body class="text-slate-900 flex flex-col min-h-screen bg-slate-50">
+
+    <!-- Top Navigation Header (Academic White Theme) -->
+    <header id="main-header" class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between py-2">
+            <!-- Brand & Academy Name with official APAG 1959 Logo -->
+            <div class="flex items-center space-x-3.5 cursor-pointer" onclick="navigateTo('dashboard')">
+                <div class="h-10 sm:h-11 flex items-center flex-shrink-0">
+                    <!-- APAG 1959 Image Logo directly from uploaded file -->
+                    <img src="IMG_9938_818698.png" alt="Logo APAG 1959" class="h-full w-auto object-contain">
+                </div>
+                <div class="border-l border-slate-200 pl-3.5">
+                    <h1 class="font-extrabold text-xs sm:text-sm text-napa-800 tracking-wide uppercase leading-tight">HỌC VIỆN HÀNH CHÍNH VÀ QUẢN TRỊ CÔNG</h1>
+                    <p class="text-[11px] text-slate-500 font-medium">Hệ thống Đào tạo & Trắc nghiệm Trực tuyến</p>
+                </div>
+            </div>
+
+            <!-- Student Info & Logout -->
+            <div class="flex items-center space-x-4">
+                <div class="hidden sm:flex items-center space-x-3 bg-slate-100/80 px-3.5 py-1.5 rounded-xl border border-slate-200">
+                    <div class="w-9 h-9 rounded-full bg-napa-800 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                        <span id="user-avatar-text">SV</span>
+                    </div>
+                    <div class="text-left pr-1">
+                        <p id="header-student-name" class="text-xs font-bold text-slate-900">Sinh Viên</p>
+                        <p id="header-student-id" class="text-[11px] text-napa-600 font-semibold">MSSV: ---</p>
+                    </div>
+                </div>
+                
+                <button onclick="logout()" class="inline-flex items-center space-x-1.5 text-slate-600 hover:text-red-700 hover:bg-red-50 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-colors border border-transparent hover:border-red-200">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span class="hidden md:inline">Đăng xuất</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Body -->
+    <main class="flex-1 flex flex-col">
+        
+        <!-- ==================== 1. LOGIN & REGISTER SCREEN ==================== -->
+        <section id="screen-login" class="flex-1 flex items-center justify-center p-4 bg-slate-50 py-10">
+            <div class="w-full max-w-lg">
+                <div class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden academic-border">
+                    <!-- Academy Header Banner with Official APAG 1959 Logo -->
+                    <div class="p-8 text-center bg-white border-b border-slate-100 relative">
+                        <div class="h-16 sm:h-20 mx-auto mb-4 flex items-center justify-center">
+                            <!-- APAG 1959 Image Logo directly from uploaded file -->
+                            <img src="IMG_9938_818698.png" alt="Logo APAG 1959" class="h-full w-auto object-contain max-h-20">
+                        </div>
+                        <h2 class="text-xs font-bold text-napa-600 uppercase tracking-widest mb-1">CỔNG THI VÀ ÔN TẬP TRỰC TUYẾN</h2>
+                        <h1 class="text-xl sm:text-2xl font-extrabold text-napa-800 tracking-tight leading-snug">HỌC VIỆN HÀNH CHÍNH VÀ QUẢN TRỊ CÔNG</h1>
+                        <p class="text-xs text-slate-500 font-medium mt-2">Học phần: Luật Hành Chính • Chương 4 (50 câu trắc nghiệm)</p>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="login-form" onsubmit="handleLogin(event)" class="p-6 sm:p-8 space-y-4">
+                        <div id="login-error" class="hidden p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs font-medium flex items-center gap-2">
+                            <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
+                            <span id="login-error-msg">Vui lòng điền đầy đủ thông tin!</span>
+                        </div>
+
+                        <!-- Full Name -->
+                        <div>
+                            <label for="full-name" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Họ và Tên Sinh Viên <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                                    <i data-lucide="user-check" class="w-4 h-4"></i>
+                                </span>
+                                <input type="text" id="full-name" required placeholder="Nhập họ và tên (Ví dụ: Nguyễn Văn Ánh)"
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-napa-800 focus:border-transparent text-slate-900 text-xs sm:text-sm transition-all font-medium">
+                            </div>
+                        </div>
+
+                        <!-- Student ID -->
+                        <div>
+                            <label for="student-id" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Mã Sinh Viên (MSSV) <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                                    <i data-lucide="id-card" class="w-4 h-4"></i>
+                                </span>
+                                <input type="text" id="student-id" required placeholder="Nhập mã sinh viên (Ví dụ: 2205HCA001)"
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-napa-800 focus:border-transparent text-slate-900 text-xs sm:text-sm transition-all font-medium">
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div>
+                            <label for="password" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Mật Khẩu <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                                    <i data-lucide="lock" class="w-4 h-4"></i>
+                                </span>
+                                <input type="password" id="password" required placeholder="••••••••"
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-napa-800 focus:border-transparent text-slate-900 text-xs sm:text-sm transition-all font-medium">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-napa-800 hover:bg-napa-900 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 text-xs sm:text-sm tracking-wide mt-2">
+                            <i data-lucide="log-in" class="w-4 h-4"></i>
+                            <span>ĐĂNG NHẬP VÀO HỆ THỐNG</span>
+                        </button>
+
+                        <div class="pt-2">
+                            <button type="button" onclick="fillDemoUser()" class="w-full py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors border border-slate-200 flex items-center justify-center space-x-1.5">
+                                <i data-lucide="sparkles" class="w-4 h-4 text-amber-600"></i>
+                                <span>Tự động điền dữ liệu sinh viên mẫu</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <p class="text-center text-slate-400 text-xs mt-6 font-medium">© 2026 Học viện Hành chính và Quản trị công • National Academy of Public Administration</p>
+            </div>
+        </section>
+
+        <!-- ==================== 2. DASHBOARD SCREEN ==================== -->
+        <section id="screen-dashboard" class="hidden flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+            <!-- Student Banner Header -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-8 academic-border">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="space-y-2">
+                        <div class="inline-flex items-center gap-2 bg-slate-100 text-napa-800 text-xs font-bold px-3 py-1 rounded-full border border-slate-200">
+                            <i data-lucide="shield-check" class="w-4 h-4 text-napa-800"></i>
+                            <span>Cổng Đào Tạo Chính Quy</span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                            Xin chào sinh viên: <span id="dash-student-fullname" class="text-napa-800">---</span>
+                        </h2>
+                        <p class="text-slate-600 text-xs sm:text-sm font-medium">
+                            Mã số sinh viên: <span id="dash-student-id-display" class="font-bold text-slate-900">---</span> • Lớp: Quản lý Nhà nước 2026
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-200 flex-shrink-0">
+                        <div class="text-center px-3">
+                            <p class="text-[11px] font-bold text-slate-500 uppercase">Lần làm bài</p>
+                            <p id="stat-completed-count" class="text-lg font-black text-slate-900 mt-0.5">0</p>
+                        </div>
+                        <div class="text-center px-3 border-x border-slate-200">
+                            <p class="text-[11px] font-bold text-slate-500 uppercase">Điểm TB</p>
+                            <p id="stat-avg-score" class="text-lg font-black text-amber-600 mt-0.5">0.0</p>
+                        </div>
+                        <div class="text-center px-3">
+                            <p class="text-[11px] font-bold text-slate-500 uppercase">Điểm cao nhất</p>
+                            <p id="stat-max-score" class="text-lg font-black text-emerald-600 mt-0.5">0.0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz List Title -->
+            <div class="mb-6 flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                        <i data-lucide="book-open" class="w-5 h-5 text-napa-800"></i>
+                        Danh Sách Bài Thi & Chuyên Đề
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Nội dung trắc nghiệm học phần Chương 4: Quyết định hành chính & Thủ tục hành chính</p>
+                </div>
+            </div>
+
+            <!-- Quiz Grid -->
+            <div id="quiz-list-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <!-- Dynamically populated cards -->
+            </div>
+
+            <!-- Quiz History Table -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+                <h4 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <i data-lucide="history" class="w-4 h-4 text-napa-800"></i>
+                    Nhật Ký Kết Quả Thi Gần Đây
+                </h4>
+                <div id="history-container" class="overflow-x-auto">
+                    <!-- Dynamic Table -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 3. QUIZ ENGINE SCREEN ==================== -->
+        <section id="screen-quiz" class="hidden flex-1 flex flex-col bg-slate-100">
+            <!-- Quiz Top Bar -->
+            <div class="bg-white border-b border-slate-200 px-4 py-3 sticky top-18 z-20 shadow-xs">
+                <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3 overflow-hidden">
+                        <button onclick="confirmExitQuiz()" class="p-2 hover:bg-slate-100 rounded-xl text-slate-500 transition-colors" title="Thoát bài thi">
+                            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                        </button>
+                        <div class="truncate">
+                            <h2 id="quiz-title-display" class="font-bold text-sm sm:text-base text-slate-900 truncate">Tên Bài Thi</h2>
+                            <p id="quiz-progress-text" class="text-xs text-slate-500 font-semibold">Câu 1 / 50</p>
+                        </div>
+                    </div>
+
+                    <!-- Countdown Badge -->
+                    <div id="timer-badge" class="flex items-center space-x-2 bg-amber-50 border border-amber-300 text-amber-800 px-4 py-1.5 rounded-full font-mono font-bold text-sm sm:text-base flex-shrink-0 shadow-xs">
+                        <i data-lucide="clock" class="w-4 h-4 text-amber-600 animate-pulse"></i>
+                        <span id="timer-text">60:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Quiz Workspace -->
+            <div class="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left Column: Question Area (8 cols) -->
+                <div class="lg:col-span-8 flex flex-col space-y-4">
+                    <!-- Progress Line -->
+                    <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                        <div id="top-progress-bar" class="bg-napa-800 h-full w-0 transition-all duration-300"></div>
+                    </div>
+
+                    <!-- Question Container -->
+                    <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-xs border border-slate-200 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span id="question-badge" class="inline-block bg-napa-50 text-napa-800 text-xs font-bold px-3 py-1 rounded-lg border border-napa-100">
+                                    Câu hỏi 1
+                                </span>
+                                <span class="text-xs text-slate-400 font-medium">Học viện Hành chính và Quản trị công</span>
+                            </div>
+                            
+                            <h3 id="question-text" class="text-base sm:text-lg font-bold text-slate-900 leading-relaxed mb-6">
+                                Nội dung câu hỏi trắc nghiệm...
+                            </h3>
+
+                            <!-- Options Grid -->
+                            <div id="options-container" class="space-y-3">
+                                <!-- Dynamic Options -->
+                            </div>
+                        </div>
+
+                        <!-- Bottom Controls -->
+                        <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-100">
+                            <button id="btn-prev-question" onclick="prevQuestion()" class="inline-flex items-center space-x-2 text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                                <span>Câu trước</span>
+                            </button>
+
+                            <button id="btn-next-question" onclick="nextQuestion()" class="inline-flex items-center space-x-2 bg-napa-800 hover:bg-napa-900 text-white px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-colors">
+                                <span>Câu tiếp theo</span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Palette & Submission (4 cols) -->
+                <div class="lg:col-span-4 flex flex-col space-y-4">
+                    <div class="bg-white rounded-2xl p-5 shadow-xs border border-slate-200">
+                        <h4 class="font-bold text-slate-900 text-sm mb-3 flex items-center justify-between">
+                            <span>Ma Trận 50 Câu Hỏi</span>
+                            <span id="answered-stat" class="text-xs font-normal text-slate-500">Đã làm: 0/50</span>
+                        </h4>
+
+                        <!-- Matrix Palette -->
+                        <div id="question-palette" class="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-5 gap-2 max-h-64 lg:max-h-96 overflow-y-auto custom-scrollbar p-1">
+                            <!-- JS Generated Buttons -->
+                        </div>
+
+                        <!-- Status Color Legend -->
+                        <div class="flex items-center justify-around text-[11px] text-slate-500 pt-4 mt-4 border-t border-slate-100">
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 rounded bg-slate-100 border border-slate-300"></span> Chưa làm
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 rounded bg-napa-800 text-white"></span> Đã chọn
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 rounded ring-2 ring-emerald-500 bg-white"></span> Đang xem
+                            </div>
+                        </div>
+
+                        <!-- Final Submit Button -->
+                        <button onclick="promptSubmitQuiz()" class="w-full mt-5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 text-xs sm:text-sm">
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                            <span>NỘP BÀI THI NGAY</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 4. RESULT & REVIEW SCREEN ==================== -->
+        <section id="screen-result" class="hidden flex-1 p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto w-full">
+            <!-- Results Header Card -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-slate-200 text-center mb-8 relative overflow-hidden academic-border">
+                <div class="inline-flex p-4 rounded-full bg-slate-100 text-napa-800 mb-3 mt-2">
+                    <i data-lucide="award" class="w-12 h-12"></i>
+                </div>
+
+                <h2 class="text-2xl sm:text-3xl font-black text-slate-900">KẾT QUẢ BÀI THI TRẮC NGHIỆM</h2>
+                <p id="result-quiz-name" class="text-xs sm:text-sm text-slate-500 font-semibold mt-1">Chương 4: Quyết định & Thủ tục hành chính</p>
+                <p class="text-xs text-slate-400 mt-0.5">Thí sinh: <span id="result-student-info" class="font-bold text-slate-800">---</span></p>
+
+                <!-- Stats Badges -->
+                <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-6 my-6">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-center min-w-[130px]">
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Điểm Thang 10</p>
+                        <p id="result-score-text" class="text-3xl font-black text-napa-800 mt-1">0.0 / 10</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-center min-w-[130px]">
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Số câu đúng</p>
+                        <p id="result-correct-text" class="text-3xl font-black text-emerald-600 mt-1">0 / 50</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-center min-w-[130px]">
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Tỷ lệ chính xác</p>
+                        <p id="result-percent-text" class="text-3xl font-black text-amber-600 mt-1">0%</p>
+                    </div>
+                </div>
+
+                <!-- Feedback Banner -->
+                <div id="result-feedback" class="p-3.5 bg-slate-100 text-slate-800 rounded-xl text-xs sm:text-sm font-semibold max-w-md mx-auto mb-6 border border-slate-200">
+                    Xuất sắc! Bạn đã hoàn thành bài thi.
+                </div>
+
+                <!-- Action Controls -->
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button onclick="retakeCurrentQuiz()" class="inline-flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-colors shadow-xs">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        <span>Thi lại bài này</span>
+                    </button>
+                    <button onclick="navigateTo('dashboard')" class="inline-flex items-center space-x-2 bg-napa-800 hover:bg-napa-900 text-white font-semibold px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-colors shadow-xs">
+                        <i data-lucide="home" class="w-4 h-4"></i>
+                        <span>Trở về trang chủ</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Answer Explanations List -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i data-lucide="file-check-2" class="w-5 h-5 text-napa-800"></i>
+                        Xem Chi Tiết Đáp Án & Cơ Sở Pháp Lý
+                    </h3>
+                    <span class="text-xs text-slate-500 font-medium">Toàn bộ 50 câu Chương 4</span>
+                </div>
+
+                <div id="result-details-container" class="space-y-4">
+                    <!-- Dynamic Answer Details -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- SUBMIT CONFIRMATION MODAL -->
+    <div id="modal-submit" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 transform transition-all">
+            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-4 mx-auto">
+                <i data-lucide="help-circle" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 text-center mb-1">Xác nhận nộp bài thi?</h3>
+            <p id="modal-submit-msg" class="text-xs sm:text-sm text-slate-600 text-center mb-6">
+                Bạn có chắc chắn muốn kết thúc bài làm và nộp bài thi ngay bây giờ không?
+            </p>
+
+            <div class="flex gap-3">
+                <button onclick="closeSubmitModal()" class="flex-1 py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold rounded-xl transition-colors">
+                    Tiếp tục làm bài
+                </button>
+                <button onclick="finalSubmitQuiz()" class="flex-1 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold rounded-xl transition-colors shadow-md">
+                    Xác nhận nộp bài
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC & FULL 50 QUESTIONS DATASET -->
+    <script>
+        /* ==================== COMPLETE 50 QUESTIONS DATASET (CHƯƠNG 4) ==================== */
+        const ALL_50_QUESTIONS = [
+            {
+                id: 1,
+                question: 'Câu 1: Quyết định hành chính là kết quả của sự thể hiện ý chí quyền lực của chủ thể nào?',
+                options: ['Các tổ chức chính trị - xã hội', 'Nhà nước', 'Nhân dân', 'Cán bộ, công chức'],
+                correct: 1, // B
+                explanation: 'Quyết định hành chính mang tính quyền lực nhà nước, thể hiện ý chí quyền lực của Nhà nước nhằm thực hiện chức năng quản lý hành chính.'
+            },
+            {
+                id: 2,
+                question: 'Câu 2: Cơ quan nào sau đây thực hiện quyền hành pháp trong hệ thống cơ quan hành chính nhà nước để ban hành quyết định hành chính?',
+                options: ['Cơ quan lập pháp', 'Cơ quan tư pháp', 'Cơ quan hành chính nhà nước', 'Viện kiểm sát nhân dân'],
+                correct: 2, // C
+                explanation: 'Cơ quan hành chính nhà nước (Chính phủ, UBND các cấp, các Bộ...) thực hiện quyền hành pháp để quản lý và ban hành QĐHC.'
+            },
+            {
+                id: 3,
+                question: 'Câu 3: Theo nghĩa hẹp, quyết định hành chính có hình thức tồn tại là gì?',
+                options: ['Lời nói', 'Văn bản', 'Hành động cụ thể', 'Dấu hiệu, tín hiệu'],
+                correct: 1, // B
+                explanation: 'Theo nghĩa hẹp (quy chuẩn pháp lý), quyết định hành chính tồn tại dưới hình thức văn bản do cơ quan/chủ thể có thẩm quyền ban hành.'
+            },
+            {
+                id: 4,
+                question: 'Câu 4: Đặc điểm nào sau đây KHÔNG phải là đặc điểm chung của quyết định hành chính?',
+                options: ['Tính quyền lực nhà nước', 'Tính ý chí', 'Tính tùy nghi', 'Tính pháp lý'],
+                correct: 2, // C
+                explanation: 'Quyết định hành chính bắt buộc tuân thủ nguyên tắc pháp chế, tính hợp pháp và hợp lý, không được ban hành tùy nghi.'
+            },
+            {
+                id: 5,
+                question: 'Câu 5: Tính "dưới luật" của quyết định hành chính thể hiện ở việc ban hành nhằm mục đích gì?',
+                options: ['Tổ chức, triển khai, thi hành luật', 'Sửa đổi, bổ sung Hiến pháp', 'Phủ định các đạo luật đã ban hành', 'Thay thế các nghị quyết của Quốc hội'],
+                correct: 0, // A
+                explanation: 'Tính dưới luật thể hiện ở việc QĐHC ban hành dựa trên cơ sở luật nhằm tổ chức thi hành và áp dụng pháp luật vào thực tiễn.'
+            },
+            {
+                id: 6,
+                question: 'Câu 6: Căn cứ vào tính chất pháp lý, quyết định hành chính được phân thành mấy loại?',
+                options: ['2 loại', '3 loại', '4 loại', '5 loại'],
+                correct: 1, // B
+                explanation: 'Phân loại theo tính chất pháp lý gồm 3 loại: Quyết định chủ đạo, Quyết định quy phạm và Quyết định cá biệt.'
+            },
+            {
+                id: 7,
+                question: 'Câu 7: Quyết định đưa ra chủ trương, chính sách, giải pháp lớn về quản lý hành chính nhà nước thuộc loại quyết định nào?',
+                options: ['Quyết định chủ đạo', 'Quyết định quy phạm', 'Quyết định cá biệt', 'Quyết định nội bộ'],
+                correct: 0, // A
+                explanation: 'Quyết định chủ đạo đề ra đường lối, chủ trương, chính sách lớn trong quản lý hành chính nhà nước.'
+            },
+            {
+                id: 8,
+                question: 'Câu 8: Quyết định quy phạm có đặc điểm gì?',
+                options: ['Chỉ áp dụng một lần cho một đối tượng', 'Cụ thể hóa Luật, pháp lệnh để quản lý xã hội, có nội dung là những quy tắc xử sự', 'Đưa ra các chủ trương, giải pháp lớn dưới dạng Nghị quyết', 'Giải quyết một tranh chấp cụ thể'],
+                correct: 1, // B
+                explanation: 'Quyết định quy phạm chứa đựng các quy tắc xử sự chung, được áp dụng lặp đi lặp lại nhiều lần đối với nhiều đối tượng.'
+            },
+            {
+                id: 9,
+                question: 'Câu 9: Nghị quyết số 76/NQ-CP ban hành chương trình tổng thể cải cách hành chính là ví dụ của loại quyết định nào?',
+                options: ['Quyết định quy phạm', 'Quyết định cá biệt', 'Quyết định chủ đạo', 'Quyết định hành chính liên tịch'],
+                correct: 2, // C
+                explanation: 'Nghị quyết 76/NQ-CP mang tính chất đề ra chủ trương, chương trình giải pháp lớn nên thuộc Quyết định chủ đạo.'
+            },
+            {
+                id: 10,
+                question: 'Câu 10: Nghị định số 168/2019/NĐ-CP quy định xử phạt vi phạm hành chính giao thông đường bộ là ví dụ của:',
+                options: ['Quyết định chủ đạo', 'Quyết định quy phạm', 'Quyết định cá biệt', 'Quyết định kỷ luật'],
+                correct: 1, // B
+                explanation: 'Nghị định quy định quy tắc xử phạt hành chính giao thông là văn bản quy phạm pháp luật.'
+            },
+            {
+                id: 11,
+                question: 'Câu 11: Quyết định thu hồi 1000m2 đất của gia đình nhà anh A thuộc loại quyết định hành chính nào?',
+                options: ['Quyết định chủ đạo', 'Quyết định quy phạm', 'Quyết định cá biệt', 'Quyết định liên tịch'],
+                correct: 2, // C
+                explanation: 'Quyết định thu hồi đất đối với gia đình anh A giải quyết vụ việc cụ thể, áp dụng 1 lần cho đối tượng xác định nên là QĐHC cá biệt.'
+            },
+            {
+                id: 12,
+                question: 'Câu 12: Đặc điểm nổi bật của quyết định cá biệt là gì?',
+                options: ['Áp dụng nhiều lần cho nhiều đối tượng', 'Tạo ra khuôn khổ pháp lý chung', 'Áp dụng một lần, cho một hoặc một số đối tượng nhất định', 'Có hiệu lực vô thời hạn'],
+                correct: 2, // C
+                explanation: 'QĐHC cá biệt chỉ có hiệu lực áp dụng 1 lần đối với cá nhân/tổ chức cụ thể được ghi rõ tên.'
+            },
+            {
+                id: 13,
+                question: 'Câu 13: Yêu cầu về tính hợp pháp của quyết định hành chính đòi hỏi điều gì?',
+                options: ['Phải được ban hành bởi chủ thể có thẩm quyền', 'Phù hợp với luật về nội dung, mục đích', 'Đúng trình tự, thủ tục, hình thức', 'Cả A, B, C đều đúng'],
+                correct: 3, // D
+                explanation: 'Tính hợp pháp đòi hỏi toàn diện về: đúng thẩm quyền, đúng nội dung/mục đích của luật và đúng thủ tục/hình thức.'
+            },
+            {
+                id: 14,
+                question: 'Câu 14: Mục đích ban hành quyết định hành chính khác với quyết định của cơ quan tư pháp ở điểm nào?',
+                options: ['Quản lý hành chính nhà nước (chấp hành, điều hành)', 'Phân xử tranh chấp dân sự', 'Truy tố tội phạm', 'Sửa đổi luật'],
+                correct: 0, // A
+                explanation: 'QĐHC nhằm mục đích phục vụ hoạt động quản lý hành chính (chấp hành và điều hành), khác với tư pháp là xét xử.'
+            },
+            {
+                id: 15,
+                question: 'Câu 15: Yêu cầu về tính hợp lí của quyết định hành chính KHÔNG bao gồm yếu tố nào?',
+                options: ['Đảm bảo lợi ích Nhà nước, nguyện vọng nhân dân', 'Từ yêu cầu khách quan của nhiệm vụ QLHCNN', 'Đa nghĩa để linh hoạt áp dụng', 'Có tính dự báo, tính khả thi'],
+                correct: 2, // C
+                explanation: 'Văn phong QĐHC phải minh bạch, một nghĩa tuyệt đối không được "đa nghĩa" để tránh lạm quyền và tùy tiện.'
+            },
+            {
+                id: 16,
+                question: 'Câu 16: Cơ sở pháp lý về khiếu nại được dựa trên văn bản nào theo bài học?',
+                options: ['Luật Khiếu nại 2011', 'Luật Khiếu nại 2025', 'Luật Tố tụng hành chính 2015', 'Luật Xử lý vi phạm hành chính'],
+                correct: 1, // B
+                explanation: 'Căn cứ chuẩn xác theo tài liệu bài học học phần (Luật Khiếu nại 2025).'
+            },
+            {
+                id: 17,
+                question: 'Câu 17: Ai là người có thẩm quyền giải quyết khiếu nại lần 1 đối với quyết định hành chính?',
+                options: ['Cấp trên trực tiếp của người ban hành QĐHC', 'Chính người ban hành quyết định hành chính, thực hiện hành vi hành chính', 'Chủ tịch Ủy ban nhân dân cấp tỉnh', 'Tòa án nhân dân'],
+                correct: 1, // B
+                explanation: 'Người giải quyết khiếu nại lần 1 là chính người/cơ quan đã ban hành QĐHC hoặc thực hiện hành vi hành chính đó.'
+            },
+            {
+                id: 18,
+                question: 'Câu 18: Khiếu nại lần 2 đối với quyết định hành chính được gửi đến cơ quan/cá nhân nào?',
+                options: ['Tòa án nhân dân', 'Cấp trên trực tiếp của người có thẩm quyền giải quyết khiếu nại lần 1', 'Cấp dưới của người ban hành QĐHC', 'Thanh tra Chính phủ'],
+                correct: 1, // B
+                explanation: 'Khiếu nại lần 2 gửi đến Thủ trưởng cấp trên trực tiếp của người đã giải quyết khiếu nại lần 1.'
+            },
+            {
+                id: 19,
+                question: 'Câu 19: Khởi kiện vụ án hành chính là việc cá nhân, cơ quan, tổ chức khiếu kiện tại đâu?',
+                options: ['Viện kiểm sát', 'Tòa án', 'Thanh tra Chính phủ', 'Ủy ban nhân dân cấp trên'],
+                correct: 1, // B
+                explanation: 'Khởi kiện hành chính là việc yêu cầu Tòa án nhân dân giải quyết theo trình tự tố tụng hành chính.'
+            },
+            {
+                id: 20,
+                question: 'Câu 20: Loại quyết định hành chính nào mới được khiếu nại đến cơ quan nhà nước có thẩm quyền hoặc khởi kiện ra Tòa hành chính?',
+                options: ['Quyết định chủ đạo', 'Quyết định quy phạm', 'Quyết định cá biệt', 'Mọi loại quyết định hành chính'],
+                correct: 2, // C
+                explanation: 'Chỉ có Quyết định hành chính CÁ BIỆT làm ảnh hưởng trực tiếp tới quyền lợi của đối tượng cụ thể mới được khiếu nại/khởi kiện.'
+            },
+            {
+                id: 21,
+                question: 'Câu 21: Hành vi hành chính được thể hiện dưới hình thức nào?',
+                options: ['Chỉ bằng hành động', 'Chỉ bằng không hành động (bỏ lơ nhiệm vụ)', 'Bằng hành động hoặc không hành động', 'Bằng văn bản quy phạm pháp luật'],
+                correct: 2, // C
+                explanation: 'Hành vi hành chính thể hiện qua hành động cụ thể hoặc không hành động (không thực hiện công vụ theo luật định).'
+            },
+            {
+                id: 22,
+                question: 'Câu 22: Quyết định, hành vi hành chính nào sau đây bị LOẠI TRỪ khỏi đối tượng khiếu kiện hành chính?',
+                options: ['Quyết định xử phạt vi phạm giao thông', 'Quyết định thu hồi đất', 'Quyết định thuộc phạm vi bí mật nhà nước về ngoại giao, an ninh', 'Quyết định cấp giấy phép xây dựng'],
+                correct: 2, // C
+                explanation: 'Các quyết định thuộc bí mật nhà nước trong lĩnh vực an ninh, quốc phòng, ngoại giao bị loại trừ theo Luật TTHC.'
+            },
+            {
+                id: 23,
+                question: 'Câu 23: Quyết định mang tính nội bộ của cơ quan, tổ chức có phải là đối tượng khởi kiện vụ án hành chính không?',
+                options: ['Có, luôn luôn', 'Không, bị loại trừ theo quy định pháp luật', 'Tùy thuộc vào người bị kỷ luật', 'Chỉ khi có sự đồng ý của Giám đốc'],
+                correct: 1, // B
+                explanation: 'Quyết định mang tính chỉ đạo, quản lý nội bộ cơ quan không thuộc đối tượng khởi kiện vụ án hành chính.'
+            },
+            {
+                id: 24,
+                question: 'Câu 24: Nhận định: "Thẩm quyền giải quyết KN lần hai đối với QĐHC của Chủ tịch UBND cấp xã thuộc về Chủ tịch UBND cấp tỉnh" là Đúng hay Sai?',
+                options: ['Đúng', 'Sai (Thuộc về Chủ tịch UBND cấp huyện)', 'Sai (Thuộc về Tòa án nhân dân)', 'Tùy từng trường hợp'],
+                correct: 1, // B
+                explanation: 'Sai, vì cấp trên trực tiếp của Chủ tịch UBND cấp xã là Chủ tịch UBND cấp huyện.'
+            },
+            {
+                id: 25,
+                question: 'Câu 25: Trong tình huống anh A và anh B ẩu đả, Chủ tịch UBND xã ra quyết định phạt mỗi người 1 triệu và ghi thêm "Những trường hợp ẩu đả tương tự đều nộp 1 triệu". Quyết định này bị sai ở điểm nào?',
+                options: ['Sai thẩm quyền', 'Sai vì chứa quy phạm pháp luật trong một quyết định cá biệt', 'Sai vì mức phạt quá thấp', 'Không có điểm sai, hoàn toàn hợp lệ'],
+                correct: 1, // B
+                explanation: 'QĐHC cá biệt không được phép quy định nội dung mang tính quy phạm áp dụng chung cho các vụ việc về sau.'
+            },
+            {
+                id: 26,
+                question: 'Câu 26: Anh Nguyễn Văn A vượt đèn đỏ bị CSGT phạt tiền. Quyết định xử phạt này là:',
+                options: ['Quyết định hành chính cá biệt', 'Quyết định hành chính quy phạm', 'Quyết định hành chính chủ đạo', 'Quyết định tư pháp'],
+                correct: 0, // A
+                explanation: 'Quyết định xử phạt vi phạm giao thông cụ thể đối với anh A là QĐHC cá biệt.'
+            },
+            {
+                id: 27,
+                question: 'Câu 27: Ở vụ việc vận chuyển hàng trái phép, nếu anh A không đồng ý với QĐ giải quyết KN của Chủ tịch UBND xã B, cơ quan giải quyết khiếu nại lần 2 chuẩn xác nhất là ai?',
+                options: ['Chủ tịch UBND cấp huyện (cấp trên trực tiếp của xã)', 'Chủ tịch UBND tỉnh C', 'Tòa án nhân dân xã B', 'Giám đốc Công an tỉnh'],
+                correct: 0, // A
+                explanation: 'Chủ tịch UBND cấp huyện là thủ trưởng cấp trên trực tiếp có thẩm quyền giải quyết khiếu nại lần 2.'
+            },
+            {
+                id: 28,
+                question: 'Câu 28: Quan điểm rộng nhất về Thủ tục hành chính (TTHC) coi TTHC là gì?',
+                options: ['Cách thức giải quyết tranh chấp hành chính', 'Cách thức ban hành QĐHC cá biệt', 'Cách thức tổ chức thực hiện mọi hoạt động quản lý hành chính nhà nước', 'Trình tự ra bản án của Tòa án'],
+                correct: 2, // C
+                explanation: 'Quan điểm rộng xem TTHC là trình tự thực hiện toàn bộ hoạt động quản lý hành chính nhà nước.'
+            },
+            {
+                id: 29,
+                question: 'Câu 29: Vai trò của thủ tục hành chính là gì?',
+                options: ['Phương tiện để thực hiện chức năng CQHCNN', 'Phương thức kiểm soát quyền lực NN, tránh lạm quyền', 'Cầu nối trong quan hệ giữa NN với công dân', 'Cả A, B, C đều đúng'],
+                correct: 3, // D
+                explanation: 'TTHC thể hiện vai trò toàn diện: vừa là công cụ quản lý, vừa kiểm soát quyền lực và tạo cầu nối với công dân.'
+            },
+            {
+                id: 30,
+                question: 'Câu 30: Theo bài học, có bao nhiêu nguyên tắc cơ bản của thủ tục hành chính?',
+                options: ['3', '4', '5', '6'],
+                correct: 2, // C
+                explanation: 'Giáo trình xác định 5 nguyên tắc cơ bản trong thủ tục hành chính.'
+            },
+            {
+                id: 31,
+                question: 'Câu 31: Việc TTHC chỉ do cơ quan nhà nước có thẩm quyền ban hành và thực hiện phản ánh nguyên tắc nào?',
+                options: ['Nguyên tắc pháp chế', 'Nguyên tắc khách quan', 'Nguyên tắc công khai, minh bạch', 'Nguyên tắc bình đẳng'],
+                correct: 0, // A
+                explanation: 'Nguyên tắc pháp chế yêu cầu mọi TTHC phải được ban hành và thực thi đúng thẩm quyền luật định.'
+            },
+            {
+                id: 32,
+                question: 'Câu 32: Nhà nước tạo điều kiện cho đối tượng thực hiện TTHC được đóng góp ý kiến, nội dung rõ ràng, công bố rộng rãi. Đây là nguyên tắc nào?',
+                options: ['Nguyên tắc khách quan', 'Nguyên tắc công khai, minh bạch', 'Nguyên tắc đơn giản, tiết kiệm', 'Nguyên tắc bình đẳng'],
+                correct: 1, // B
+                explanation: 'Công khai minh bạch đảm bảo mọi thủ tục được niêm yết rõ ràng và cho phép công dân tiếp cận dễ dàng.'
+            },
+            {
+                id: 33,
+                question: 'Câu 33: Nguyên tắc nào yêu cầu thủ tục phải dễ áp dụng, giải quyết nhanh các tình huống cấp bách?',
+                options: ['Đơn giản, tiết kiệm, nhanh chóng, kịp thời', 'Pháp chế', 'Công khai, minh bạch', 'Khách quan'],
+                correct: 0, // A
+                explanation: 'Đảm bảo TTHC tinh gọn, cắt giảm rườm rà thể hiện nguyên tắc Đơn giản, tiết kiệm, nhanh chóng, kịp thời.'
+            },
+            {
+                id: 34,
+                question: 'Câu 34: Chủ thể thực hiện thủ tục hành chính là ai?',
+                options: ['Tổ chức chính trị - xã hội', 'Cá nhân có nhu cầu cấp phép', 'CQHCNN, cán bộ công chức nhân danh Nhà nước', 'Mọi công dân'],
+                correct: 2, // C
+                explanation: 'Chủ thể THỰC HIỆN TTHC (chủ thể có thẩm quyền giải quyết) là Cơ quan hành chính và cán bộ công chức.'
+            },
+            {
+                id: 35,
+                question: 'Câu 35: Người dân đến UBND xin cấp giấy khai sinh đóng vai trò gì trong thủ tục hành chính?',
+                options: ['Chủ thể thực hiện TTHC', 'Chủ thể tham gia TTHC', 'Chủ thể ban hành TTHC', 'Chủ thể giám sát TTHC'],
+                correct: 1, // B
+                explanation: 'Cá nhân gửi yêu cầu giải quyết thủ tục giữ vai trò là "Chủ thể THAM GIA" TTHC.'
+            },
+            {
+                id: 36,
+                question: 'Câu 36: Dựa vào tính chất công việc, TTHC được phân thành:',
+                options: ['TTHC ban hành văn bản và TTHC giải quyết công việc', 'TTHC nội bộ và TTHC liên hệ', 'TTHC cấp phép và TTHC xử phạt', 'TTHC trung ương và TTHC địa phương'],
+                correct: 1, // B
+                explanation: 'Phân loại theo mối quan hệ công việc gồm TTHC nội bộ và TTHC liên hệ (với cá nhân, tổ chức ngoài).'
+            },
+            {
+                id: 37,
+                question: 'Câu 37: Việc giải quyết khiếu nại, cấp giấy phép cho công dân thuộc loại TTHC nào?',
+                options: ['TTHC nội bộ', 'TTHC liên hệ', 'TTHC ban hành văn bản QPPL', 'TTHC lập pháp'],
+                correct: 1, // B
+                explanation: 'Các thủ tục giải quyết công việc trực tiếp liên quan tới cá nhân, tổ chức bên ngoài gọi là TTHC liên hệ.'
+            },
+            {
+                id: 38,
+                question: 'Câu 38: Quá trình thực hiện thủ tục hành chính gồm mấy giai đoạn chính?',
+                options: ['3', '4', '5', '6'],
+                correct: 1, // B
+                explanation: 'Gồm 4 giai đoạn chính (Khởi xướng -> Xem xét ra QĐ -> Thi hành QĐ -> Giải quyết khiếu nại).'
+            },
+            {
+                id: 39,
+                question: 'Câu 39: Giai đoạn đầu tiên của quy trình thủ tục hành chính là gì?',
+                options: ['Xem xét và ra quyết định', 'Thi hành quyết định', 'Khởi xướng vụ việc', 'Khiếu nại'],
+                correct: 2, // C
+                explanation: 'Giai đoạn khởi xướng (bằng đơn đề nghị hoặc phát hiện vi phạm) là bước đầu tiên của quy trình TTHC.'
+            },
+            {
+                id: 40,
+                question: 'Câu 40: Việc cơ quan có thẩm quyền thu thập thông tin, chứng cứ, lựa chọn quy phạm pháp luật để áp dụng nằm ở giai đoạn nào?',
+                options: ['Khởi xướng vụ việc', 'Xem xét và ra quyết định giải quyết vụ việc', 'Thi hành quyết định', 'Giải quyết khiếu nại'],
+                correct: 1, // B
+                explanation: 'Thu thập chứng cứ và lựa chọn căn cứ pháp lý nằm ở giai đoạn xem xét và ra quyết định giải quyết.'
+            },
+            {
+                id: 41,
+                question: 'Câu 41: Việc áp dụng biện pháp cưỡng chế (tạm giữ người, tang vật) thường diễn ra ở giai đoạn nào nếu có căn cứ pháp luật?',
+                options: ['Khởi xướng vụ việc', 'Khiếu nại', 'Tổ chức lấy ý kiến nhân dân', 'Cải cách TTHC'],
+                correct: 0, // A
+                explanation: 'Ở ngay giai đoạn khởi xướng, nếu có căn cứ vi phạm, việc áp dụng biện pháp ngăn chặn tạm giữ có thể diễn ra.'
+            },
+            {
+                id: 42,
+                question: 'Câu 42: Cải cách thủ tục hành chính nhằm mang lại lợi ích gì?',
+                options: ['Bảo đảm tính hợp pháp, quyền công dân', 'Giảm chi phí quản lý', 'Xây dựng Chính phủ điện tử, Chính phủ số', 'Tất cả các ý trên'],
+                correct: 3, // D
+                explanation: 'Cải cách TTHC hướng đến lợi ích toàn diện: bảo vệ quyền dân, tiết giảm nguồn lực và xây dựng Chính phủ số.'
+            },
+            {
+                id: 43,
+                question: 'Câu 43: Việc người dân có quyền đưa ra các yêu cầu hợp pháp khi thực hiện TTHC phản ánh nguyên tắc nào?',
+                options: ['Nguyên tắc pháp chế', 'Nguyên tắc bình đẳng trước pháp luật của các bên tham gia', 'Nguyên tắc khách quan', 'Nguyên tắc công khai minh bạch'],
+                correct: 1, // B
+                explanation: 'Nguyên tắc bình đẳng bảo đảm các bên tham gia TTHC có quyền và nghĩa vụ tương ứng bình đẳng trước pháp luật.'
+            },
+            {
+                id: 44,
+                question: 'Câu 44: Điểm khác biệt lớn nhất giữa TTHC và Thủ tục tư pháp là gì?',
+                options: ['TTHC giải quyết tranh chấp hình sự', 'TTHC do Tòa án thực hiện', 'TTHC tổ chức các hoạt động quản lý hành chính, do CQHCNN thực hiện', 'TTHC không có tính bắt buộc'],
+                correct: 2, // C
+                explanation: 'TTHC phục vụ quản lý điều hành do Cơ quan hành chính thực hiện, khác với Thủ tục tư pháp do Tòa án thực hiện.'
+            },
+            {
+                id: 45,
+                question: 'Câu 45: Nhận định: "Trong mọi trường hợp, thời hạn giải quyết khiếu nại lần hai không quá 45 ngày" là Đúng hay Sai?',
+                options: ['Đúng', 'Sai (tùy thuộc vùng sâu vùng xa, vụ việc phức tạp có thể kéo dài hơn)', 'Tùy thuộc vào người khiếu nại', 'Tùy thuộc vào Tòa án'],
+                correct: 1, // B
+                explanation: 'Sai, vì đối với vụ việc phức tạp hoặc vùng sâu vùng xa thời hạn có thể kéo dài lên tới 60-70 ngày.'
+            },
+            {
+                id: 46,
+                question: 'Câu 46: Đối tượng nào sau đây bị giới hạn không được quyền khởi kiện hành chính?',
+                options: ['Quyết định kỷ luật buộc thôi việc đối với công chức lãnh đạo từ Tổng cục trưởng trở lên', 'Quyết định phạt vi phạm hành chính 2 triệu đồng', 'Quyết định thu hồi giấy phép kinh doanh', 'Quyết định tháo dỡ công trình xây dựng'],
+                correct: 0, // A
+                explanation: 'Các quyết định kỷ luật cán bộ lãnh đạo cấp cao mang tính nội bộ quản lý đặc biệt nên bị loại trừ khỏi khởi kiện hành chính.'
+            },
+            {
+                id: 47,
+                question: 'Câu 47: Trong TTHC, khi có sự vi phạm, chủ thể nào phải chịu trách nhiệm pháp lý?',
+                options: ['Chỉ người dân (chủ thể tham gia)', 'Chỉ cơ quan nhà nước (chủ thể thực hiện)', 'Bất kỳ chủ thể nào vi phạm (cả hai bên)', 'Chủ thể ban hành văn bản QPPL'],
+                correct: 2, // C
+                explanation: 'Bất kỳ bên nào (cán bộ thực thi hoặc người dân tham gia) nếu có hành vi vi phạm đều chịu trách nhiệm pháp lý tương ứng.'
+            },
+            {
+                id: 48,
+                question: 'Câu 48: Ý nghĩa của việc bãi bỏ các thủ tục rườm rà, không cần thiết là gì?',
+                options: ['Khắc phục hạn chế của TTHC, phát triển mối quan hệ Nhà nước và công dân', 'Làm giảm ngân sách nhà nước', 'Giảm số lượng công chức', 'Tăng quyền lực cho cơ quan tư pháp'],
+                correct: 0, // A
+                explanation: 'Loại bỏ rào cản TTHC giúp khắc phục hạn chế, củng cố mối quan hệ tin cậy giữa Nhà nước và công dân.'
+            },
+            {
+                id: 49,
+                question: 'Câu 49: Trong bài tập tình huống 2, thành phần quan hệ pháp luật hành chính phát sinh khi CSGT phạt anh A bao gồm:',
+                options: ['Chủ thể (CSGT và anh A), Khách thể (trật tự an toàn giao thông), Nội dung (quyền xử phạt của CSGT và nghĩa vụ nộp phạt của anh A)', 'Chủ thể (Công an và Tòa án)', 'Nội dung (anh A có quyền từ chối nộp phạt vô điều kiện)', 'Khách thể (chiếc xe mô tô)'],
+                correct: 0, // A
+                explanation: 'Quan hệ PLHC hoàn chỉnh bao gồm Chủ thể (CSGT & anh A), Khách thể (trật tự an toàn giao thông) và Nội dung (Quyền & Nghĩa vụ xử phạt).'
+            },
+            {
+                id: 50,
+                question: 'Câu 50: Theo định nghĩa, hành vi hành chính được thực hiện khi nào?',
+                options: ['Khi có yêu cầu của công dân', 'Khi cá nhân tự ý hành động', 'Khi cơ quan hành chính, người có thẩm quyền thực hiện hoặc không thực hiện nhiệm vụ, công vụ theo quy định pháp luật', 'Khi Tòa án ra bản án'],
+                correct: 2, // C
+                explanation: 'Hành vi hành chính phát sinh khi cơ quan/người có thẩm quyền thi hành hoặc không thi hành nhiệm vụ, công vụ được giao.'
+            }
+        ];
+
+        /* ==================== QUIZ PRESETS ==================== */
+        const QUIZ_PRESETS = [
+            {
+                id: 'quiz-full',
+                title: 'Bài Thi Tổng Hợp Chương 4 (Trọn bộ 50 câu)',
+                category: 'Thi Tổng Hợp',
+                durationMinutes: 60,
+                description: 'Đề thi trắc nghiệm chuẩn 50 câu kiểm tra toàn diện Quyết định hành chính & Thủ tục hành chính.',
+                questions: ALL_50_QUESTIONS
+            },
+            {
+                id: 'quiz-part1',
+                title: 'Chuyên Đề 1: Quyết Định Hành Chính (Câu 1 - 27)',
+                category: 'Chuyên Đề 1',
+                durationMinutes: 25,
+                description: 'Luyện tập chuyên sâu về đặc điểm, phân loại, yêu cầu hợp pháp và giải quyết khiếu nại QĐHC.',
+                questions: ALL_50_QUESTIONS.slice(0, 27)
+            },
+            {
+                id: 'quiz-part2',
+                title: 'Chuyên Đề 2: Thủ Tục Hành Chính (Câu 28 - 50)',
+                category: 'Chuyên Đề 2',
+                durationMinutes: 25,
+                description: 'Luyện tập nguyên tắc, vai trò, chủ thể, 4 giai đoạn quy trình và cải cách Thủ tục hành chính.',
+                questions: ALL_50_QUESTIONS.slice(27, 50)
+            }
+        ];
+
+        /* ==================== APP STATE MANAGEMENT ==================== */
+        let state = {
+            currentUser: null, // { fullName, studentId, loginTime }
+            currentQuiz: null,
+            currentQuestionIdx: 0,
+            userAnswers: {},
+            timerInterval: null,
+            timeLeftSeconds: 0,
+            history: []
+        };
+
+        /* ==================== INITIALIZATION ==================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFromLocalStorage();
+            lucide.createIcons();
+            
+            if (state.currentUser) {
+                showScreen('dashboard');
+            } else {
+                showScreen('login');
+            }
+        });
+
+        function loadFromLocalStorage() {
+            const savedUser = localStorage.getItem('napa_student_ch4');
+            if (savedUser) {
+                try { state.currentUser = JSON.parse(savedUser); } catch (e) { state.currentUser = null; }
+            }
+
+            const savedHistory = localStorage.getItem('napa_history_ch4');
+            if (savedHistory) {
+                try { state.history = JSON.parse(savedHistory); } catch (e) { state.history = []; }
+            }
+        }
+
+        function saveUserToStorage(userObj) {
+            state.currentUser = userObj;
+            localStorage.setItem('napa_student_ch4', JSON.stringify(userObj));
+        }
+
+        function saveHistoryToStorage(record) {
+            state.history.unshift(record);
+            localStorage.setItem('napa_history_ch4', JSON.stringify(state.history));
+        }
+
+        /* ==================== SCREEN SWITCHING ==================== */
+        function showScreen(screenId) {
+            document.getElementById('screen-login').classList.add('hidden');
+            document.getElementById('screen-dashboard').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.add('hidden');
+
+            const header = document.getElementById('main-header');
+            if (screenId === 'login') {
+                header.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+                updateHeaderUserUI();
+            }
+
+            document.getElementById(`screen-${screenId}`).classList.remove('hidden');
+            
+            if (screenId === 'dashboard') {
+                renderDashboard();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function navigateTo(screenId) {
+            if (screenId === 'dashboard' && state.timerInterval) {
+                confirmExitQuiz();
+                return;
+            }
+            showScreen(screenId);
+        }
+
+        function updateHeaderUserUI() {
+            if (state.currentUser) {
+                document.getElementById('header-student-name').innerText = state.currentUser.fullName;
+                document.getElementById('header-student-id').innerText = `MSSV: ${state.currentUser.studentId}`;
+                document.getElementById('user-avatar-text').innerText = state.currentUser.fullName.split(' ').pop().substring(0, 2).toUpperCase();
+                
+                document.getElementById('dash-student-fullname').innerText = state.currentUser.fullName;
+                document.getElementById('dash-student-id-display').innerText = state.currentUser.studentId;
+            }
+        }
+
+        /* ==================== AUTHENTICATION LOGIC ==================== */
+        function fillDemoUser() {
+            document.getElementById('full-name').value = 'Nguyễn Văn Ánh';
+            document.getElementById('student-id').value = '2205HCA001';
+            document.getElementById('password').value = '123456';
+            document.getElementById('login-error').classList.add('hidden');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('full-name').value.trim();
+            const studentId = document.getElementById('student-id').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorDiv = document.getElementById('login-error');
+            const errorMsg = document.getElementById('login-error-msg');
+
+            if (!fullName || !studentId || !password) {
+                errorMsg.innerText = 'Vui lòng nhập đầy đủ Họ và Tên, Mã sinh viên và Mật khẩu.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            errorDiv.classList.add('hidden');
+            saveUserToStorage({ fullName, studentId, loginTime: new Date().toISOString() });
+            showScreen('dashboard');
+        }
+
+        function logout() {
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+                state.timerInterval = null;
+            }
+            state.currentUser = null;
+            localStorage.removeItem('napa_student_ch4');
+            showScreen('login');
+        }
+
+        /* ==================== DASHBOARD RENDER ==================== */
+        function renderDashboard() {
+            const grid = document.getElementById('quiz-list-grid');
+            grid.innerHTML = '';
+
+            const completedCount = state.history.length;
+            document.getElementById('stat-completed-count').innerText = `${completedCount}`;
+
+            if (completedCount > 0) {
+                const totalScore = state.history.reduce((acc, item) => acc + item.score, 0);
+                const avg = (totalScore / completedCount).toFixed(1);
+                const maxScore = Math.max(...state.history.map(a => a.score)).toFixed(1);
+
+                document.getElementById('stat-avg-score').innerText = `${avg}`;
+                document.getElementById('stat-max-score').innerText = `${maxScore}`;
+            } else {
+                document.getElementById('stat-avg-score').innerText = '0.0';
+                document.getElementById('stat-max-score').innerText = '0.0';
+            }
+
+            // Render 3 Quiz Cards
+            QUIZ_PRESETS.forEach(quiz => {
+                const attempts = state.history.filter(h => h.quizId === quiz.id);
+                let bestScoreText = 'Chưa thi';
+                if (attempts.length > 0) {
+                    const maxScore = Math.max(...attempts.map(a => a.score)).toFixed(1);
+                    bestScoreText = `Điểm cao nhất: ${maxScore}/10`;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group';
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 bg-napa-50 text-napa-800 text-xs font-bold rounded-lg border border-napa-100">
+                                ${quiz.category}
+                            </span>
+                            <span class="text-xs text-slate-500 font-semibold flex items-center gap-1">
+                                <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400"></i>
+                                ${quiz.durationMinutes} phút
+                            </span>
+                        </div>
+                        <h4 class="font-extrabold text-slate-900 text-base group-hover:text-napa-800 transition-colors mb-2">
+                            ${quiz.title}
+                        </h4>
+                        <p class="text-xs text-slate-500 leading-relaxed mb-4">
+                            ${quiz.description}
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <div class="text-xs font-medium text-slate-500">
+                            <span class="text-slate-800 font-bold">${quiz.questions.length} câu</span> • 
+                            <span class="text-emerald-700 font-semibold">${bestScoreText}</span>
+                        </div>
+                        <button onclick="startQuiz('${quiz.id}')" class="inline-flex items-center space-x-1.5 bg-napa-800 hover:bg-napa-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs transition-all">
+                            <span>Vào làm bài</span>
+                            <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Render History Table
+            const historyContainer = document.getElementById('history-container');
+            if (state.history.length === 0) {
+                historyContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Bạn chưa làm bài thi nào. Chọn một bài bên trên để bắt đầu thi!</p>`;
+            } else {
+                let tableHtml = `
+                    <table class="w-full text-left text-xs text-slate-600">
+                        <thead class="bg-slate-50 text-slate-800 font-bold border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">Thời gian</th>
+                                <th class="p-3">Bài thi</th>
+                                <th class="p-3 text-center">Kết quả</th>
+                                <th class="p-3 text-right">Điểm số</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                `;
+                state.history.slice(0, 5).forEach(item => {
+                    tableHtml += `
+                        <tr class="hover:bg-slate-50">
+                            <td class="p-3 font-medium text-slate-500">${item.date}</td>
+                            <td class="p-3 font-semibold text-slate-900">${item.quizTitle}</td>
+                            <td class="p-3 text-center font-bold text-slate-700">${item.correctCount} / ${item.totalQuestions} câu</td>
+                            <td class="p-3 text-right font-black text-napa-800 text-sm">${item.score.toFixed(1)} / 10</td>
+                        </tr>
+                    `;
+                });
+                tableHtml += `</tbody></table>`;
+                historyContainer.innerHTML = tableHtml;
+            }
+
+            lucide.createIcons();
+        }
+
+        /* ==================== QUIZ ENGINE LOGIC ==================== */
+        function startQuiz(quizId) {
+            const quiz = QUIZ_PRESETS.find(q => q.id === quizId);
+            if (!quiz) return;
+
+            state.currentQuiz = quiz;
+            state.currentQuestionIdx = 0;
+            state.userAnswers = {};
+            state.timeLeftSeconds = quiz.durationMinutes * 60;
+
+            document.getElementById('quiz-title-display').innerText = quiz.title;
+
+            startTimer();
+            showScreen('quiz');
+            renderQuestion();
+            renderPalette();
+        }
+
+        function startTimer() {
+            if (state.timerInterval) clearInterval(state.timerInterval);
+
+            updateTimerDisplay();
+            state.timerInterval = setInterval(() => {
+                state.timeLeftSeconds--;
+                updateTimerDisplay();
+
+                if (state.timeLeftSeconds <= 0) {
+                    clearInterval(state.timerInterval);
+                    state.timerInterval = null;
+                    finalSubmitQuiz(true);
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(state.timeLeftSeconds / 60);
+            const seconds = state.timeLeftSeconds % 60;
+            const text = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            const timerText = document.getElementById('timer-text');
+            const timerBadge = document.getElementById('timer-badge');
+
+            timerText.innerText = text;
+
+            if (state.timeLeftSeconds < 300) {
+                timerBadge.className = 'flex items-center space-x-2 bg-red-50 border border-red-300 text-red-700 px-4 py-1.5 rounded-full font-mono font-bold text-sm sm:text-base flex-shrink-0 animate-pulse';
+            } else {
+                timerBadge.className = 'flex items-center space-x-2 bg-amber-50 border border-amber-300 text-amber-800 px-4 py-1.5 rounded-full font-mono font-bold text-sm sm:text-base flex-shrink-0';
+            }
+        }
+
+        function renderQuestion() {
+            const quiz = state.currentQuiz;
+            const q = quiz.questions[state.currentQuestionIdx];
+            const total = quiz.questions.length;
+
+            document.getElementById('quiz-progress-text').innerText = `Câu ${state.currentQuestionIdx + 1} / ${total}`;
+            document.getElementById('question-badge').innerText = `Câu hỏi ${state.currentQuestionIdx + 1}`;
+            document.getElementById('question-text').innerText = q.question;
+
+            const percent = ((state.currentQuestionIdx + 1) / total) * 100;
+            document.getElementById('top-progress-bar').style.width = `${percent}%`;
+
+            document.getElementById('btn-prev-question').disabled = state.currentQuestionIdx === 0;
+
+            const nextBtn = document.getElementById('btn-next-question');
+            if (state.currentQuestionIdx === total - 1) {
+                nextBtn.innerHTML = `<span>Xem lại câu 1</span> <i data-lucide="rotate-ccw" class="w-4 h-4"></i>`;
+            } else {
+                nextBtn.innerHTML = `<span>Câu tiếp theo</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>`;
+            }
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const letters = ['A', 'B', 'C', 'D'];
+            const selectedOpt = state.userAnswers[q.id];
+
+            q.options.forEach((optText, idx) => {
+                const isSelected = selectedOpt === idx;
+                const optBtn = document.createElement('button');
+                optBtn.className = `w-full text-left p-4 rounded-xl border transition-all flex items-start space-x-3 group ${
+                    isSelected 
+                        ? 'border-napa-800 bg-napa-50/90 text-napa-900 ring-2 ring-napa-800/20 font-medium shadow-xs' 
+                        : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-800'
+                }`;
+                optBtn.onclick = () => selectOption(q.id, idx);
+
+                optBtn.innerHTML = `
+                    <span class="w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center flex-shrink-0 transition-colors ${
+                        isSelected 
+                            ? 'bg-napa-800 text-white shadow-xs' 
+                            : 'bg-slate-100 text-slate-600 group-hover:bg-slate-200'
+                    }">
+                        ${letters[idx]}
+                    </span>
+                    <span class="text-xs sm:text-sm leading-relaxed pt-0.5">${optText}</span>
+                `;
+                optionsContainer.appendChild(optBtn);
+            });
+
+            lucide.createIcons();
+            renderPalette();
+        }
+
+        function selectOption(questionId, optionIdx) {
+            state.userAnswers[questionId] = optionIdx;
+            renderQuestion();
+        }
+
+        function prevQuestion() {
+            if (state.currentQuestionIdx > 0) {
+                state.currentQuestionIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            const total = state.currentQuiz.questions.length;
+            if (state.currentQuestionIdx < total - 1) {
+                state.currentQuestionIdx++;
+            } else {
+                state.currentQuestionIdx = 0;
+            }
+            renderQuestion();
+        }
+
+        function goToQuestion(idx) {
+            state.currentQuestionIdx = idx;
+            renderQuestion();
+        }
+
+        function renderPalette() {
+            const palette = document.getElementById('question-palette');
+            palette.innerHTML = '';
+            const questions = state.currentQuiz.questions;
+            let answeredCount = 0;
+
+            questions.forEach((q, idx) => {
+                const isAnswered = state.userAnswers[q.id] !== undefined;
+                const isCurrent = state.currentQuestionIdx === idx;
+                if (isAnswered) answeredCount++;
+
+                const btn = document.createElement('button');
+                let btnClasses = "h-8 sm:h-9 rounded-lg font-bold text-xs transition-all flex items-center justify-center ";
+
+                if (isCurrent) {
+                    btnClasses += "ring-2 ring-emerald-500 ring-offset-2 border-2 border-emerald-500 ";
+                }
+
+                if (isAnswered) {
+                    btnClasses += "bg-napa-800 text-white shadow-xs";
+                } else {
+                    btnClasses += "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200";
+                }
+
+                btn.className = btnClasses;
+                btn.innerText = idx + 1;
+                btn.onclick = () => goToQuestion(idx);
+
+                palette.appendChild(btn);
+            });
+
+            document.getElementById('answered-stat').innerText = `Đã làm: ${answeredCount}/${questions.length}`;
+        }
+
+        /* ==================== SUBMISSION LOGIC ==================== */
+        function promptSubmitQuiz() {
+            const total = state.currentQuiz.questions.length;
+            const answered = Object.keys(state.userAnswers).length;
+            const modalMsg = document.getElementById('modal-submit-msg');
+
+            if (answered < total) {
+                modalMsg.innerText = `Bạn đã trả lời ${answered}/${total} câu. Vẫn còn ${total - answered} câu chưa chọn đáp án. Bạn có muốn nộp bài sớm không?`;
+            } else {
+                modalMsg.innerText = `Bạn đã hoàn thành toàn bộ ${total} câu hỏi! Xác nhận nộp bài ngay bây giờ?`;
+            }
+
+            document.getElementById('modal-submit').classList.remove('hidden');
+        }
+
+        function closeSubmitModal() {
+            document.getElementById('modal-submit').classList.add('hidden');
+        }
+
+        function confirmExitQuiz() {
+            if (state.timerInterval) {
+                const leave = window.confirm("Bài thi đang diễn ra. Rời khỏi đây sẽ hủy kết quả lượt thi này. Bạn chắc chắn chứ?");
+                if (leave) {
+                    clearInterval(state.timerInterval);
+                    state.timerInterval = null;
+                    showScreen('dashboard');
+                }
+            } else {
+                showScreen('dashboard');
+            }
+        }
+
+        function finalSubmitQuiz(isTimeout = false) {
+            closeSubmitModal();
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+                state.timerInterval = null;
+            }
+
+            const quiz = state.currentQuiz;
+            let correctCount = 0;
+
+            quiz.questions.forEach(q => {
+                if (state.userAnswers[q.id] === q.correct) {
+                    correctCount++;
+                }
+            });
+
+            const total = quiz.questions.length;
+            const score10 = parseFloat(((correctCount / total) * 10).toFixed(1));
+            const percentage = Math.round((correctCount / total) * 100);
+
+            const record = {
+                quizId: quiz.id,
+                quizTitle: quiz.title,
+                score: score10,
+                correctCount,
+                totalQuestions: total,
+                date: new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'})
+            };
+            saveHistoryToStorage(record);
+
+            renderResults(score10, correctCount, total, percentage);
+            showScreen('result');
+        }
+
+        /* ==================== RESULT RENDER & EXPLANATION ==================== */
+        function renderResults(score, correct, total, percent) {
+            document.getElementById('result-quiz-name').innerText = state.currentQuiz.title;
+            document.getElementById('result-student-info').innerText = `${state.currentUser.fullName} (${state.currentUser.studentId})`;
+            document.getElementById('result-score-text').innerText = `${score.toFixed(1)} / 10`;
+            document.getElementById('result-correct-text').innerText = `${correct} / ${total}`;
+            document.getElementById('result-percent-text').innerText = `${percent}%`;
+
+            const feedbackEl = document.getElementById('result-feedback');
+
+            if (score >= 8.0) {
+                feedbackEl.className = "p-3.5 bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-xl text-xs sm:text-sm font-semibold max-w-md mx-auto mb-6";
+                feedbackEl.innerText = "🎉 XUẤT SẮC! Sinh viên nắm rất vững lý thuyết Luật Hành Chính Chương 4.";
+            } else if (score >= 5.0) {
+                feedbackEl.className = "p-3.5 bg-amber-50 text-amber-900 border border-amber-200 rounded-xl text-xs sm:text-sm font-semibold max-w-md mx-auto mb-6";
+                feedbackEl.innerText = "👍 ĐẠT YÊU CẦU! Hãy kiểm tra các câu chọn sai để hoàn thiện kiến thức.";
+            } else {
+                feedbackEl.className = "p-3.5 bg-red-50 text-red-900 border border-red-200 rounded-xl text-xs sm:text-sm font-semibold max-w-md mx-auto mb-6";
+                feedbackEl.innerText = "⚠️ CẦN ÔN TẬP THÊM! Đọc lại giáo trình Chương 4 và làm lại bài thi.";
+            }
+
+            const container = document.getElementById('result-details-container');
+            container.innerHTML = '';
+
+            const letters = ['A', 'B', 'C', 'D'];
+
+            state.currentQuiz.questions.forEach((q, qIdx) => {
+                const userSelected = state.userAnswers[q.id];
+                const isCorrect = userSelected === q.correct;
+
+                const card = document.createElement('div');
+                card.className = `bg-white rounded-2xl p-5 border shadow-xs ${
+                    isCorrect ? 'border-emerald-200' : 'border-red-200'
+                }`;
+
+                let optionsHtml = '';
+                q.options.forEach((optText, optIdx) => {
+                    let optStyle = "bg-slate-50 border-slate-200 text-slate-700";
+                    let badge = '';
+
+                    if (optIdx === q.correct) {
+                        optStyle = "bg-emerald-50 border-emerald-500 text-emerald-950 font-medium";
+                        badge = `<span class="ml-auto text-[11px] font-bold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded border border-emerald-200 flex-shrink-0">Đáp án đúng chuẩn</span>`;
+                    } else if (optIdx === userSelected && !isCorrect) {
+                        optStyle = "bg-red-50 border-red-400 text-red-950 font-medium";
+                        badge = `<span class="ml-auto text-[11px] font-bold text-red-800 bg-red-100/90 px-2 py-0.5 rounded border border-red-200 flex-shrink-0">Lựa chọn của sinh viên</span>`;
+                    }
+
+                    optionsHtml += `
+                        <div class="p-3 rounded-xl border text-xs sm:text-sm flex items-center justify-between gap-2 ${optStyle}">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold">${letters[optIdx]}.</span>
+                                <span>${optText}</span>
+                            </div>
+                            ${badge}
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold px-2.5 py-1 rounded-md ${
+                            isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'
+                        }">
+                            Câu ${qIdx + 1} - ${isCorrect ? 'ĐÚNG' : 'SAI'}
+                        </span>
+                        <span class="text-xs text-slate-400 font-medium">Mã câu: #${q.id}</span>
+                    </div>
+
+                    <h4 class="font-bold text-slate-900 text-sm sm:text-base mb-4 leading-relaxed">
+                        ${q.question}
+                    </h4>
+
+                    <div class="space-y-2 mb-4">
+                        ${optionsHtml}
+                    </div>
+
+                    <div class="bg-blue-50/70 border border-blue-100 rounded-xl p-3.5 text-xs text-blue-900 flex items-start gap-2.5">
+                        <i data-lucide="info" class="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5"></i>
+                        <div>
+                            <span class="font-bold block mb-0.5 text-blue-950">Giải thích căn cứ pháp lý:</span>
+                            <span class="leading-relaxed">${q.explanation}</span>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        function retakeCurrentQuiz() {
+            if (state.currentQuiz) {
+                startQuiz(state.currentQuiz.id);
+            }
+        }
+    </script>
+</body>
+</html>
